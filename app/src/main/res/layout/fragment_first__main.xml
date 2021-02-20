@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".FirstFragment_Main">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+            android:id="@+id/recent_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="최신음악 >"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="▶ 전체보기"
+            app:layout_constraintBottom_toBottomOf="@id/recent_music"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="20dp"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layout_constraintTop_toBottomOf="@id/recent_music"
+            android:layout_margin="10dp"
+            android:id="@+id/recent_music_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="10dp"
+            tools:layout_editor_absoluteY="127dp" />
+
+        <TextView
+            android:id="@+id/silsigan_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="실시간 차트 >"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recent_music_recycler" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="▶ 전체보기"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan_txt"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="20dp"/>
+
+        <ImageView
+        android:id="@+id/silsigan1"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintTop_toBottomOf="@id/silsigan_txt"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/silsigan1_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간 제목 0"
+            app:layout_constraintLeft_toRightOf="@id/silsigan1"
+            app:layout_constraintTop_toTopOf="@id/silsigan1"
+            app:layout_constraintBottom_toTopOf="@id/silsigan1_name"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/silsigan1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간 이름 0"
+            android:textSize="15dp"
+            app:layout_constraintLeft_toRightOf="@id/silsigan1"
+            app:layout_constraintTop_toBottomOf="@id/silsigan1_title"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan1"
+            android:layout_marginLeft="20dp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/play"
+            app:layout_constraintTop_toTopOf="@id/silsigan1"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan1"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="20dp"/>
+
+        <ImageView
+            android:id="@+id/silsigan2"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintTop_toBottomOf="@id/silsigan1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/silsigan2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간 제목 1"
+            app:layout_constraintLeft_toRightOf="@id/silsigan2"
+            app:layout_constraintTop_toTopOf="@id/silsigan2"
+            app:layout_constraintBottom_toTopOf="@id/silsigan2_name"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/silsigan2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간 이름 1"
+            android:textSize="15dp"
+            app:layout_constraintLeft_toRightOf="@id/silsigan2"
+            app:layout_constraintTop_toBottomOf="@id/silsigan2_title"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan2"
+            android:layout_marginLeft="20dp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/play"
+            app:layout_constraintTop_toTopOf="@id/silsigan2"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan2"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="20dp"/>
+
+        <ImageView
+            android:id="@+id/silsigan3"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintTop_toBottomOf="@id/silsigan2"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/silsigan3_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간 제목 2"
+            app:layout_constraintLeft_toRightOf="@id/silsigan3"
+            app:layout_constraintTop_toTopOf="@id/silsigan3"
+            app:layout_constraintBottom_toTopOf="@id/silsigan3_name"
+            android:textSize="20dp"
+            android:layout_marginLeft="20dp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/silsigan3_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="실시간 이름 2"
+            android:textSize="15dp"
+            app:layout_constraintLeft_toRightOf="@id/silsigan3"
+            app:layout_constraintTop_toBottomOf="@id/silsigan3_title"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan3"
+            android:layout_marginLeft="20dp"/>
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/play"
+            app:layout_constraintTop_toTopOf="@id/silsigan3"
+            app:layout_constraintBottom_toBottomOf="@id/silsigan3"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="20dp"/>
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/button1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="시작"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <Button
+            android:visibility="invisible"
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="중단"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>
