@@ -46,7 +46,7 @@ public class MyService extends Service {
     /*String url = "http://15.164.220.153/music/Forget Your Love.mp3";*/
     //음악재생 변수
     public String url;
-    private int item_position;
+    public static int item_position;
     ImageView p_next, p_play, p_pause, p_before, p_img;
     TextView p_title, p_id;
     private RetrofitAPI retrofitAPI;
@@ -72,6 +72,7 @@ public class MyService extends Service {
     public static final int clickmusic = 108;
     public static final int getData = 109;
     public static final int getData2 = 110;
+    public static final int getData4 = 115;
     public static final int time = 111;
     public static final int seekto = 112;
     public static final int loop = 113;
@@ -189,8 +190,28 @@ public class MyService extends Service {
     MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
         @Override
         public void onCompletion(MediaPlayer mediaPlayer) {
+
+            Call<Result2> call = retrofitAPI.insert_24hit(id,postResponse.get(item_position).getMusic_idx());
+            call.enqueue(new Callback<Result2>() {
+                @Override
+                public void onResponse(Call<Result2> call, Response<Result2> response) {
+                    Log.e("성공성공","성공성공");
+                }
+
+                @Override
+                public void onFailure(Call<Result2> call, Throwable t) {
+
+                }
+            });
             next_music();
             sendMsgToActivity();
+
+
+            Log.i("노래다들음","노래다들음");
+            Log.i("노래다들음","노래다들음");
+            Log.i("노래다들음","노래다들음");
+            Log.i("노래다들음","노래다들음");
+            //최근들은음악은 요기 추가하면좋을듯
             nextclick = false;
         }
     };
@@ -231,6 +252,8 @@ public class MyService extends Service {
 
                 Log.i("onResponse", "2" + response.body());
                 postResponse = response.body();
+
+                sendMsgToActivity();
 
                 listsun = getStringArrayPref(getApplicationContext(),"listsun"+id);
 
@@ -303,6 +326,9 @@ public class MyService extends Service {
 
                 listsun = getStringArrayPref(getApplicationContext(),"listsun"+id);
 
+                for (int j = 0; j < listsun.size();j++) {
+                    Log.e("listsun 서비스", j + " : " + listsun.get(j));
+                }
                 Log.e("리스트사이즈?","+"+listsun.size());
 
                 for (int i = 0; i < listsun.size(); i++){
@@ -421,6 +447,124 @@ public class MyService extends Service {
 
 
     }
+
+    public void getData4() {
+        Log.e("마이서비스", "getData");
+        for (int j = 0; j < postResponse.size();j++) {
+            Log.e("20210429", "getData4" + " : " + postResponse.get(j));
+        }
+        final int d_idx = postResponse.get(item_position).getList_num();
+        Log.e("20210429", "d_idx" + " : " + d_idx);
+
+        final ArrayList<Integer> test = new ArrayList<>();
+
+        for (int i = item_position; i < postResponse.size(); i++){
+            test.add(postResponse.get(i).getList_num());
+        }
+
+        for (int j = 0; j < test.size();j++) {
+            Log.e("test 서비스", j + " : " + test.get(j));
+        }
+
+        Call<ArrayList<User_Music_List>> call = retrofitAPI.User_play_list(id);
+
+        call.enqueue(new Callback<ArrayList<User_Music_List>>() {
+            @Override
+            public void onResponse(Call<ArrayList<User_Music_List>> call, Response<ArrayList<User_Music_List>> response) {
+                if (!response.isSuccessful()) {
+
+                    Log.i("onResponse", "1" + response.body().toString());
+                    return;
+                }
+
+                Log.i("onResponse", "2" + response.body());
+                postResponse = response.body();
+
+                listsun = getStringArrayPref(getApplicationContext(),"listsun"+id);
+
+                for (int j = 0; j < listsun.size();j++) {
+                    Log.e("listsun 서비스", j + " : " + listsun.get(j));
+                }
+                Log.e("리스트사이즈?","+"+listsun.size());
+
+                for (int i = 0; i < listsun.size(); i++){
+                    for(int j = 0; j < postResponse.size(); j++){
+                        if (listsun.get(i).equals(postResponse.get(j).getList_num())){
+                            User_Music_List person = postResponse.get(j);
+                            //이동할 객체 삭제
+                            postResponse.remove(j);
+                            //이동하고 싶은 position에 추가
+                            postResponse.add(i,person);
+                            //Adapter에 데이터 이동알림
+                        }
+                    }
+                }
+                playList = new ArrayList<>();
+
+                for (int j = 0; j < postResponse.size();j++) {
+                    Log.e("20210429", "getData42" + " : " + postResponse.get(j));
+                }
+                Log.e("마이서비스", "postResponse받음");
+                for (int i = 0; i < postResponse.size(); i++) {
+                    playList.add(postResponse.get(i).getMusic_url());
+                }
+                //item_position = postResponse.size()-1;
+                boolean is = false;
+                int is_i = 0;
+                for (int i = 0; i < postResponse.size(); i++) {
+                    if(postResponse.get(i).getList_num() == d_idx){
+                        is_i = i;
+                        is = true;
+                        Log.e("마이서비스", "삭제안됨됨됨");
+                        break;
+                    };
+                }
+                if (is){
+                    //삭제안됐을때
+                    item_position = is_i;
+                    Log.e("마이서비스", "삭제안됨됨됨2");
+                    sendMsgToActivity2(is_i);
+                }else{
+                    //삭제됐을때9
+                    Log.e("마이서비스", "삭제됨됨됨");
+                    boolean gods = false;
+                    int del_i = 0;
+                    for (int i = 0; i < postResponse.size(); i++) {
+                        for (int j = 0; j < test.size(); j++) {
+                            if (postResponse.get(i).getList_num() == test.get(j)){
+                                del_i = i;
+                                Log.e("하나둘",j+":"+i);
+                                gods = true;
+                                break;
+                            }
+                            if (gods){
+                                break;
+                            }
+                        }
+                    }
+                    test.clear();
+                    closePlayer();
+                    item_position = del_i;
+                    sendMsgToActivity2(item_position);
+                    playAudio();
+                    sendMsgToActivity();
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<User_Music_List>> call, Throwable t) {
+
+                Log.i("onResponse", "3");
+                Toast.makeText(getApplicationContext(), "회원정보를 다시 확인해주세요", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+    }
     //음악재생
     public void playAudio() {
         if (postResponse.size() != 0){
@@ -520,7 +664,6 @@ public class MyService extends Service {
 
             mediaPlayer.stop();
             isPlaying = mediaPlayer.isPlaying();
-
 
         }
     }
@@ -626,7 +769,7 @@ public class MyService extends Service {
     }
 
     void startForegroundService() {
-        Intent notificationIntent = new Intent(this, MyPlayList.class);
+        Intent notificationIntent = new Intent(this, User_Play_list.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 
         remoteViews = createRemoteView(R.layout.notification_player);
@@ -748,6 +891,7 @@ public class MyService extends Service {
             switch (msg.what) {
                 case MSG_REGISTER_CLIENT:
                     mClient = msg.replyTo;  // activity로부터 가져온
+                    Log.e("mClient","mClient");
                     break;
                 case playAudio:
                     if (postResponse.size() != 0){
@@ -797,6 +941,9 @@ public class MyService extends Service {
                     break;
                 case getData2:
                     getData3();
+                    break;
+                case getData4:
+                    getData4();
                     break;
                 case seekto:
                     int clickseekto;
@@ -854,11 +1001,30 @@ public class MyService extends Service {
                 Message msg = Message.obtain(null, MSG_SEND_TO_ACTIVITY);
                 msg.setData(bundle);
                 mClient.send(msg);
+
             }else{
 
             }     // msg 보내기
             } catch(RemoteException e){
             }
+
+    }
+
+    private void sendMsgToActivity2(int is_i) {
+        try {
+            if (postResponse.size() != 0) {
+                Bundle bundle = new Bundle();
+
+                bundle.putString("gugu", "" + is_i);
+                Message msg = Message.obtain(null, 9999);
+                msg.setData(bundle);
+                mClient.send(msg);
+
+            }else{
+
+            }     // msg 보내기
+        } catch(RemoteException e){
+        }
 
     }
 
@@ -884,6 +1050,7 @@ public class MyService extends Service {
             }
         },50);
     }
+
 
     private ArrayList<Integer> getStringArrayPref(Context context, String key) {
         Log.e("어레이불러옴","불러옴");

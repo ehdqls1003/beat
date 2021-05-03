@@ -35,7 +35,7 @@ import retrofit2.Response;
 
 public class Playing extends AppCompatActivity {
 
-    AppCompatButton flow_b;
+    AppCompatButton flow_b,buy_b;
 
     private RetrofitAPI retrofitAPI;
     //음악재생 변수
@@ -53,6 +53,8 @@ public class Playing extends AppCompatActivity {
     SeekBar seekBar;
     String music_idx;
     ArrayList<music_like_item> music_like_list = new ArrayList<>();
+
+    String a,b;
 
 
 
@@ -82,6 +84,8 @@ public class Playing extends AppCompatActivity {
                                 .load(value3)
                                 .centerCrop()
                                 .into(img);
+                        a = value3;
+                                b= value2;
                         title.setText(value2);
                         name.setText(value1);
                         feed_id = value1;
@@ -149,12 +153,27 @@ public class Playing extends AppCompatActivity {
         heart = findViewById(R.id.heart);
         heart_outline = findViewById(R.id.heart_outline);
         heart_count = findViewById(R.id.heart_count);
+        buy_b = findViewById(R.id.buy_b);
 
         retrofitAPI = AppConfig.getRetrofit().create(RetrofitAPI.class);
         //저장된 값을 불러오기 위해 같은 네임파일을 찾음.
         SharedPreferences sf = getSharedPreferences("sFile",MODE_PRIVATE);
         //text라는 key에 저장된 값이 있는지 확인. 아무값도 들어있지 않으면 ""를 반환
         id = sf.getString("id","");
+
+        buy_b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Playing.this, buying.class);
+
+                intent.putExtra("music_img_url", a);
+                intent.putExtra("m_title", b);
+                intent.putExtra("music_idx",music_idx);
+                startActivity(intent);
+
+            }
+        });
 
         if (sf.getBoolean("allmusic"+id,false)){
             all_music.setVisibility(View.VISIBLE);

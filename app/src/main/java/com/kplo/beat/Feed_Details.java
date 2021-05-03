@@ -25,6 +25,7 @@ public class Feed_Details extends AppCompatActivity implements Feed_Details_Adap
     TextView title;
     private RetrofitAPI retrofitAPI;
     private ArrayList<Feed_Item> postResponse;
+    private ArrayList<Feed_like_Item> postResponse2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +62,39 @@ public class Feed_Details extends AppCompatActivity implements Feed_Details_Adap
                 postResponse = response.body();
                 Collections.reverse(postResponse);
 
-                // 리사이클러뷰에 LinearLayoutManager 객체 지정.
-                RecyclerView recyclerView = findViewById(R.id.recent_music_recycler) ;
-                recyclerView.setLayoutManager(new LinearLayoutManager(Feed_Details.this,LinearLayoutManager.VERTICAL,false)) ;
+                Call<ArrayList<Feed_like_Item>> call2 = retrofitAPI.getall_Feed_like();
 
-                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-                adapter = new Feed_Details_Adapter(postResponse) ;
-                recyclerView.setAdapter(adapter) ;
-                recyclerView.addItemDecoration(new RecyclerViewDecoration(20));
+                call2.enqueue(new Callback<ArrayList<Feed_like_Item>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Feed_like_Item>> call, Response<ArrayList<Feed_like_Item>> response) {
 
-                //이거안해주면 리스너안먹힘
-                adapter.setOnClickListener(Feed_Details.this);
-                Intent intent = getIntent(); /*데이터 수신*/
 
-                //리사이클러뷰 포지션값이앙니라 이거 idx값
-                int position = intent.getExtras().getInt("position"); /*int형*/
-                recyclerView.scrollToPosition(position);
+                        postResponse2 = response.body();
+                        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+
+                        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+                        RecyclerView recyclerView = findViewById(R.id.recent_music_recycler) ;
+                        recyclerView.setLayoutManager(new LinearLayoutManager(Feed_Details.this,LinearLayoutManager.VERTICAL,false)) ;
+
+                        // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                        adapter = new Feed_Details_Adapter(postResponse,postResponse2) ;
+                        recyclerView.setAdapter(adapter) ;
+                        recyclerView.addItemDecoration(new RecyclerViewDecoration(20));
+
+                        //이거안해주면 리스너안먹힘
+                        adapter.setOnClickListener(Feed_Details.this);
+                        Intent intent = getIntent(); /*데이터 수신*/
+                        //리사이클러뷰 포지션값이앙니라 이거 idx값
+                        int position = intent.getExtras().getInt("position"); /*int형*/
+                        recyclerView.scrollToPosition(position);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Feed_like_Item>> call, Throwable t) {
+
+                    }
+                });
 
             }
 
@@ -109,18 +127,39 @@ public class Feed_Details extends AppCompatActivity implements Feed_Details_Adap
                 postResponse = response.body();
                 Collections.reverse(postResponse);
 
-                // 리사이클러뷰에 LinearLayoutManager 객체 지정.
-                RecyclerView recyclerView = findViewById(R.id.recent_music_recycler) ;
-                recyclerView.setLayoutManager(new LinearLayoutManager(Feed_Details.this,LinearLayoutManager.VERTICAL,false)) ;
+                Call<ArrayList<Feed_like_Item>> call2 = retrofitAPI.getall_Feed_like();
 
-                // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
-                adapter = new Feed_Details_Adapter(postResponse) ;
-                recyclerView.setAdapter(adapter) ;
-                recyclerView.addItemDecoration(new RecyclerViewDecoration(20));
+                call2.enqueue(new Callback<ArrayList<Feed_like_Item>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<Feed_like_Item>> call, Response<ArrayList<Feed_like_Item>> response) {
 
-                //이거안해주면 리스너안먹힘
-                adapter.setOnClickListener(Feed_Details.this);
-                Intent intent = getIntent(); /*데이터 수신*/
+
+                        postResponse2 = response.body();
+                        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+
+                        // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+                        RecyclerView recyclerView = findViewById(R.id.recent_music_recycler) ;
+                        recyclerView.setLayoutManager(new LinearLayoutManager(Feed_Details.this,LinearLayoutManager.VERTICAL,false)) ;
+
+                        // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
+                        adapter = new Feed_Details_Adapter(postResponse,postResponse2) ;
+                        recyclerView.setAdapter(adapter) ;
+                        recyclerView.addItemDecoration(new RecyclerViewDecoration(20));
+
+                        //이거안해주면 리스너안먹힘
+                        adapter.setOnClickListener(Feed_Details.this);
+                        Intent intent = getIntent(); /*데이터 수신*/
+                        //리사이클러뷰 포지션값이앙니라 이거 idx값
+                        int position = intent.getExtras().getInt("position"); /*int형*/
+                        recyclerView.scrollToPosition(position);
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<Feed_like_Item>> call, Throwable t) {
+
+                    }
+                });
 
 
             }
@@ -137,6 +176,41 @@ public class Feed_Details extends AppCompatActivity implements Feed_Details_Adap
 
     @Override
     public void onItemClicked(int position, String setMusic_url) {
+
+    }
+
+    @Override
+    public void onheartClicked(int position, String id, String idx) {
+
+        Call<Result2> call = retrofitAPI.delete_Story_like(idx,id);
+        call.enqueue(new Callback<Result2>() {
+            @Override
+            public void onResponse(Call<Result2> call, Response<Result2> response) {
+
+                Log.e("좋아요","좋아요해제");
+            }
+
+            @Override
+            public void onFailure(Call<Result2> call, Throwable t) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onheart_outlineClicked(int position, String id, String idx) {
+
+        Call<Result2> call = retrofitAPI.insert_Story_like(idx,id);
+        call.enqueue(new Callback<Result2>() {
+            @Override
+            public void onResponse(Call<Result2> call, Response<Result2> response) {
+            }
+            @Override
+            public void onFailure(Call<Result2> call, Throwable t) {
+
+            }
+        });
+
 
     }
 

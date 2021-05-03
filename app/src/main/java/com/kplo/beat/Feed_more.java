@@ -175,6 +175,31 @@ public class Feed_more extends AppCompatActivity implements Comment_Adapter.MyRe
 
                 }
 
+            }
+        });
+
+        u_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Feed_more.this, Feed.class);
+
+                intent.putExtra("feed_id",postResponse.get(0).getId()); /*송신*/
+
+                startActivity(intent);
+
+            }
+        });
+
+        u_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(Feed_more.this, Feed.class);
+
+                intent.putExtra("feed_id",postResponse.get(0).getId()); /*송신*/
+
+                startActivity(intent);
 
             }
         });
@@ -435,6 +460,16 @@ public class Feed_more extends AppCompatActivity implements Comment_Adapter.MyRe
         this.su_comment = comment;
         this.c_pos = c_pos;
         OnClickupload();
+    }
+
+    @Override
+    public void onIdClicked(String feed_id) {
+
+        Intent intent = new Intent(Feed_more.this, Feed.class);
+
+        intent.putExtra("feed_id",feed_id); /*송신*/
+
+        startActivity(intent);
     }
 
     //게시물 작성 버튼클릭

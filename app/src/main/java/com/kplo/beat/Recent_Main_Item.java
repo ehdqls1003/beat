@@ -8,6 +8,7 @@ public class Recent_Main_Item {
         private String title ;
         private String my_img_url ;
         private String music_url;
+        private int count;
 
         public Recent_Main_Item(){
             this.id = id;
@@ -47,5 +48,13 @@ public class Recent_Main_Item {
 
     public void setIdx(int idx) {
         this.idx = idx;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

@@ -17,10 +17,10 @@
         app:layout_constraintTop_toTopOf="parent" />
     <ImageView
         android:id="@+id/message"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_marginRight="30dp"
-        android:src="@drawable/message"
+        android:src="@drawable/search"
         app:layout_constraintBottom_toTopOf="@id/topline"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -115,7 +115,7 @@
         app:layout_constraintLeft_toRightOf="@id/p_img"
         app:layout_constraintBottom_toTopOf="@id/p_name"
         android:layout_marginLeft="30dp"
-        android:text="음악을 선택해"
+        android:text="노래를 선택해"
         android:textStyle="bold" />
     <TextView
         android:id="@+id/p_name"

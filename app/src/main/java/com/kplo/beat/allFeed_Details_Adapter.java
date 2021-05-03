@@ -198,6 +198,16 @@ public class allFeed_Details_Adapter extends RecyclerView.Adapter<allFeed_Detail
 
                 }
             });
+
+            holder.u_img.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    mListener.onu_nameClicked(pos,item.getId());
+                    Log.e("프래그먼트",""+pos);
+
+                }
+            });
             holder.u_name.setOnClickListener(new View.OnClickListener(){
 
                 @Override

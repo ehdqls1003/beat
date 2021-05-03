@@ -1,10 +1,18 @@
 package com.kplo.beat;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,6 +53,26 @@ public class Feed extends AppCompatActivity implements Feed_Adapter.MyRecyclearV
     boolean f_f = false;
     ArrayList<Room_List> postResponse;
     String feed_img;
+
+    ServiceConnection conn;
+    private Messenger mServiceMessenger = null;
+    MyService ms; // 서비스 객체
+    boolean isService = false; // 서비스 중인 확인용
+    //서버에서데이터받기
+    private final Messenger mMessenger = new Messenger(new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            Log.i("test","act : what "+msg.what);
+            Log.e("피니시",""+isFinishing());
+            if(!isFinishing()) {
+                switch (msg.what) {
+                    case MyService.MSG_SEND_TO_ACTIVITY:
+
+                }
+            }
+            return false;
+        }
+    }));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,10 +212,9 @@ public class Feed extends AppCompatActivity implements Feed_Adapter.MyRecyclearV
                 if (items[pos].equals("스토리")){
                     Intent intent = new Intent(Feed.this, write_story.class);
                     startActivity(intent);
-                }else if(items[pos].equals("비트 업로드")){
+                }else if(items[pos].equals("음악 업로드")) {
                     Intent intent = new Intent(Feed.this, upload_music.class);
                     startActivity(intent);
-                }else if(items[pos].equals("커버 업로드")){
                 }
             }
         });
@@ -205,18 +232,59 @@ public class Feed extends AppCompatActivity implements Feed_Adapter.MyRecyclearV
         get_flowing();
         getflow();
 
+        conn = new ServiceConnection() {
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+
+                mServiceMessenger = new Messenger(service);
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
+                    msg.replyTo = mMessenger;
+                    mServiceMessenger.send(msg);
+
+                    Log.e("20210329","messenger : "+mServiceMessenger);
+
+                    //프레그먼트
+                    viewPager = findViewById(R.id.viewpager);
+                    ViewpagerAdapter adapter2 = new ViewpagerAdapter(getSupportFragmentManager(),feed_id, mServiceMessenger);
+
+                    viewPager.setAdapter(adapter2);
+
+
+                    TabLayout tabLayout = findViewById(R.id.tab_layout);
+                    tabLayout.setupWithViewPager(viewPager);
+
+                } catch (RemoteException e) {
+                }
+                Intent intent = new Intent(
+                        Feed.this, // 현재 화면
+                        MyService.class); // 다음넘어갈 컴퍼넌트
+                startService(intent);
+
+                // 서비스쪽 객체를 전달받을수 있슴
+                isService = true;
+
+                Log.e("마이서비스", "conn" + isService);
+
+
+            }
+
+            public void onServiceDisconnected(ComponentName name) {
+                // 서비스와 연결이 끊겼을 때 호출되는 메서드
+                isService = false;
+
+            }
+        };
+
+        Intent intent = new Intent(
+                Feed.this, // 현재 화면
+                MyService.class); // 다음넘어갈 컴퍼넌트
+        bindService(intent, // intent 객체
+                conn, // 서비스와 연결에 대한 정의
+                Context.BIND_AUTO_CREATE);
 
 
 
-        //프레그먼트
-        viewPager = findViewById(R.id.viewpager);
-        ViewpagerAdapter adapter2 = new ViewpagerAdapter(getSupportFragmentManager(),feed_id);
-
-        viewPager.setAdapter(adapter2);
-
-
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(viewPager);
 
 
         /*get_Feed();*/
@@ -522,6 +590,8 @@ public class Feed extends AppCompatActivity implements Feed_Adapter.MyRecyclearV
             }
         });
     }
+
+
 
 
 }

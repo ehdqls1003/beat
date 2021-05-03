@@ -27,6 +27,7 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.ViewHo
     public interface MyRecyclearViewClickListener {
         void onItemClicked(int position, String setMusic_url);
         void onmore_buttonClicked(int story_comment_num,String comment,int c_pos);
+        void onIdClicked(String feed_id);
 
     }
 
@@ -82,7 +83,7 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.ViewHo
 
         if (item.getMy_img_url().equals("")){
             Glide.with(holder.itemView.getContext())
-                    .load(R.drawable.black)
+                    .load(R.drawable.gibon)
                     .apply(new RequestOptions().circleCrop().centerCrop())
                     .centerCrop()
                     .circleCrop()
@@ -126,6 +127,24 @@ public class Comment_Adapter extends RecyclerView.Adapter<Comment_Adapter.ViewHo
                 public void onClick(View view) {
 
                     mListener.onmore_buttonClicked(item.story_comment_num,item.getComment(),pos);
+
+                }
+            });
+
+            holder.title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mListener.onIdClicked(item.getComment_id());
+
+                }
+            });
+
+            holder.img.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    mListener.onIdClicked(item.getComment_id());
 
                 }
             });

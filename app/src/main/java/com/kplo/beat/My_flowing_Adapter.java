@@ -29,7 +29,7 @@ public class My_flowing_Adapter extends RecyclerView.Adapter<My_flowing_Adapter.
 
     //버튼정의
     public interface MyRecyclearViewClickListener {
-        void onItemClicked(int position, String setMusic_url);
+        void onItemClicked(String feed_id);
         void onfollowClicked(int position, String setU_name);
         void onfollowingClicked(int position, String setU_name);
 
@@ -133,6 +133,8 @@ public class My_flowing_Adapter extends RecyclerView.Adapter<My_flowing_Adapter.
 
                 @Override
                 public void onClick(View v) {
+                    mListener.onItemClicked(item.getFriend_id());
+                    Log.e("팔로잉",item.getFriend_id());
 
 
 

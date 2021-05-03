@@ -21,8 +21,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONArray;
@@ -41,34 +39,35 @@ public class MainActivity extends AppCompatActivity {
     TextView recent_music;
 
     Button btn1, btn2;
-
+    ViewpagerAdapter_Main adapter;
     //노래서비스
     ImageView p_next,p_play,p_pause,p_before,p_img;
     TextView p_title,p_id;
     private Messenger mServiceMessenger = null;
     boolean isService = false; // 서비스 중인 확인용
     ServiceConnection conn;
-
     //서버에서데이터받기
     private final Messenger mMessenger = new Messenger(new Handler(new Handler.Callback() {
         @Override
         public boolean handleMessage(Message msg) {
+            Log.i("test","act : what "+msg.what);
+            Log.e("피니시",""+isFinishing());
             if(!isFinishing()) {
                 switch (msg.what) {
                     case MyService.MSG_SEND_TO_ACTIVITY:
-                        Log.e("뭐냐이건", "배달받음");
+                        Log.e("뭐냐이건", "배달받음1231233333");
                         String value1 = msg.getData().getString("test1");
                         Log.i("test", "act : value1 " + value1);
                         String value2 = msg.getData().getString("test2");
                         Log.i("test", "act : value1 " + value2);
                         String value3 = msg.getData().getString("test3");
                         Log.i("test", "act : value1 " + value3);
-                        Glide.with(MainActivity.this)
+                        /*Glide.with(MainActivity.this)
                                 .load(value3)
                                 .apply(new RequestOptions().circleCrop().centerCrop())
                                 .centerCrop()
                                 .circleCrop()
-                                .into(p_img);
+                                .into(p_img);*/
                         p_title.setText(value2);
                         p_id.setText(value1);
                         boolean isPlaying = msg.getData().getBoolean("isPlaying");
@@ -80,14 +79,12 @@ public class MainActivity extends AppCompatActivity {
                             p_play.setVisibility(View.INVISIBLE);
                             p_pause.setVisibility(View.VISIBLE);
                         }
-                    case MyService.unbind:
-
-
                 }
             }
             return false;
         }
     }));
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -107,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         play_list = findViewById(R.id.play_list);
 
         ViewPager vp = findViewById(R.id.viewpager);
-        ViewpagerAdapter_Main adapter = new ViewpagerAdapter_Main(getSupportFragmentManager());
+        adapter = new ViewpagerAdapter_Main(getSupportFragmentManager(),mServiceMessenger);
         vp.setAdapter(adapter);
         //프레그먼트
         TabLayout tabLayout = findViewById(R.id.tab_layout);
@@ -115,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.e("페이지이동","페이지이동");
+                Log.e("페이지이동","페이지이동"+tab);
             }
 
             @Override
@@ -133,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         message.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, Message_Activity.class);
+                Intent intent = new Intent(MainActivity.this, Search.class);
                 startActivity(intent);
             }
         });
@@ -255,29 +252,23 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
     protected void onStart() {
         super.onStart();
 
 
-        Log.e("뭐냐이건", "isService" + isService);
+        Log.e("Main", "onStart" );
         conn = new ServiceConnection() {
             public void onServiceConnected(ComponentName name,
                                            IBinder service) {
 
+                Log.e("Main", "onStart2" );
                 mServiceMessenger = new Messenger(service);
                 try {
                     Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
                     msg.replyTo = mMessenger;
                     mServiceMessenger.send(msg);
 
+                    Log.e("Main", "onStart3" );
 
                 } catch (RemoteException e) {
                 }
@@ -308,12 +299,12 @@ public class MainActivity extends AppCompatActivity {
                 conn, // 서비스와 연결에 대한 정의
                 Context.BIND_AUTO_CREATE);
 
-        /*startService(intent);*/
-        if (!MyService.data){
-            p_img.setVisibility(View.INVISIBLE);
-            p_title.setText("노래를 선택해");
-            p_id.setText("주세요");
-        }
+    }
+
+    public void set_title(String title,String name){
+
+        p_title.setText(title);
+        p_id.setText(name);
 
     }
 }

@@ -457,20 +457,6 @@ public class MyPlayList2 extends AppCompatActivity implements My_PlayList_Adapte
     @Override
     public void onItemClicked(int position,String Music_url) {
 
-        p_play.setVisibility(View.INVISIBLE);
-        p_pause.setVisibility(View.VISIBLE);
-        if (mServiceMessenger != null) {
-            try {
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("item_position",position);
-                Message msg = Message.obtain(null, MyService.clickmusic);
-                msg.setData(bundle);
-                mServiceMessenger.send(msg);      // msg 보내기
-
-            } catch (RemoteException e) {
-            }
-        }
 
         /*Intent intent = new Intent(this, MyService.class);
         bindService(intent,    // intent 객체

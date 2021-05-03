@@ -1,6 +1,7 @@
 package com.kplo.beat;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,13 +20,20 @@ import java.util.ArrayList;
 
 import me.relex.circleindicator.CircleIndicator;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class Feed_Details_Adapter extends RecyclerView.Adapter<Feed_Details_Adapter.ViewHolder> {
 
     private ArrayList<Feed_Item> mData = null ;
+    private ArrayList<Feed_like_Item> mData2 = null ;
+    String id;
+    boolean like = false;
 
     //버튼정의
     public interface MyRecyclearViewClickListener {
         void onItemClicked(int position, String setMusic_url);
+        void onheartClicked(int position, String id,String idx);
+        void onheart_outlineClicked(int position, String id,String idx);
         void onCommentClicked(int idx);
 
     }
@@ -40,7 +48,7 @@ public class Feed_Details_Adapter extends RecyclerView.Adapter<Feed_Details_Adap
 
     // 아이템 뷰를 저장하는 뷰홀더 클래스.
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView u_img,f_img,heart;
+        ImageView u_img,f_img,heart,heart_outline;
         TextView u_name,heart_count,comment_count,f_story,comment;
         ViewPager mViewPager;
         Feed_ViewPagerAdapter mViewPagerAdapter;
@@ -59,12 +67,14 @@ public class Feed_Details_Adapter extends RecyclerView.Adapter<Feed_Details_Adap
             f_story = itemView.findViewById(R.id.f_story) ;
             indicator = itemView.findViewById(R.id.indicator);
             heart= itemView.findViewById(R.id.heart);
+            heart_outline = itemView.findViewById(R.id.heart_outline);
         }
     }
 
     // 생성자에서 데이터 리스트 객체를 전달받음.
-    Feed_Details_Adapter(ArrayList<Feed_Item> list) {
+    Feed_Details_Adapter(ArrayList<Feed_Item> list,ArrayList<Feed_like_Item> list2) {
         mData = list ;
+        mData2 = list2 ;
     }
 
 
@@ -75,6 +85,10 @@ public class Feed_Details_Adapter extends RecyclerView.Adapter<Feed_Details_Adap
 
         View view = inflater.inflate(R.layout.recycler_view_item_feed_details, parent, false) ;
         Feed_Details_Adapter.ViewHolder vh = new Feed_Details_Adapter.ViewHolder(view) ;
+        //저장된 값을 불러오기 위해 같은 네임파일을 찾음.
+        SharedPreferences sf = context.getSharedPreferences("sFile",MODE_PRIVATE);
+        //text라는 key에 저장된 값이 있는지 확인. 아무값도 들어있지 않으면 ""를 반환
+        id = sf.getString("id","");
 
         return vh ;
     }
@@ -102,7 +116,26 @@ public class Feed_Details_Adapter extends RecyclerView.Adapter<Feed_Details_Adap
         holder.heart_count.setText(Integer.toString(item.getHeart_count()));
         holder.comment_count.setText(Integer.toString(item.getCommnet_count()));
         holder.u_name.setText(item.getId());
+        for(int i = 0; i < mData2.size(); i++){
+            Log.e("하트","mData2.get(i).getIdx()"+mData2.get(i).getIdx());
+            if (Integer.toString(item.getIdx()).equals(mData2.get(i).getIdx())){
+                Log.e("하트","mData2.get(i).getId()"+mData2.get(i).getId());
+                Log.e("하트","id"+id);
+                if(mData2.get(i).getId().equals(id)){
+                    like = true;
+                    break;
+                }
+            }
+        }
+        if (like){
+            holder.heart.setVisibility(View.VISIBLE);
+            holder.heart_outline.setVisibility(View.INVISIBLE);
 
+            like = false;
+        }else{
+            holder.heart.setVisibility(View.INVISIBLE);
+            holder.heart_outline.setVisibility(View.VISIBLE);
+        }
         if (item.getStory().equals("")) {
         }else{
             holder.f_story.setText(item.getStory());
@@ -172,6 +205,56 @@ public class Feed_Details_Adapter extends RecyclerView.Adapter<Feed_Details_Adap
                     mListener.onCommentClicked(item.getIdx());
 
 
+
+                }
+            });
+            holder.heart.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    mListener.onheartClicked(pos,id,Integer.toString(item.getIdx()));
+                    holder.heart.setVisibility(View.INVISIBLE);
+                    holder.heart_outline.setVisibility(View.VISIBLE);
+
+                    for (int i = 0; i < mData.size(); i++){
+                        if (mData.get(i).getIdx() == item.getIdx()){
+                            mData.get(i).setHeart_count(item.getHeart_count()-1);
+                            break;
+                        }
+                    }
+
+                    for (int i = 0; i < mData2.size(); i++){
+                        if (mData2.get(i).getIdx().equals(Integer.toString(item.getIdx()))){
+                            if (mData2.get(i).getId().equals(id)){
+                                mData2.remove(i);
+                                break;
+                            }
+                        }
+                    }
+                    notifyDataSetChanged();
+
+                }
+            });
+            holder.heart_outline.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View v) {
+                    mListener.onheart_outlineClicked(pos,id,Integer.toString(item.getIdx()));
+                    holder.heart.setVisibility(View.VISIBLE);
+                    holder.heart_outline.setVisibility(View.INVISIBLE);
+
+                    Feed_like_Item items = new Feed_like_Item();
+                    items.setId(id);
+                    items.setIdx(Integer.toString(item.getIdx()));
+                    mData2.add(items);
+                    for (int i = 0; i < mData.size(); i++){
+                        if (mData.get(i).getIdx() == item.getIdx()){
+                            mData.get(i).setHeart_count(item.getHeart_count()+1);
+                            break;
+                        }
+                    }
+                    notifyDataSetChanged();
+                    Log.e("프래그먼트",""+pos);
 
                 }
             });

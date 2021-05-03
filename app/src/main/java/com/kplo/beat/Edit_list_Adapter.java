@@ -273,7 +273,7 @@ public class Edit_list_Adapter extends RecyclerView.Adapter<Edit_list_Adapter.Vi
     }
 
     public void setStringArrayPref(Context context, String key, ArrayList<Integer> values) {
-        Log.e("어레이저장함","저장함");
+        Log.e("어레이저장함 어뎁터","저장함");
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         JSONArray a = new JSONArray();
@@ -286,6 +286,7 @@ public class Edit_list_Adapter extends RecyclerView.Adapter<Edit_list_Adapter.Vi
             editor.putString(key, null);
         }
         editor.apply();
+        editor.commit();    //최종 커밋. 커밋을 해야 저장이 된다.
     }
 
     private ArrayList<Integer> getStringArrayPref(Context context, String key) {
@@ -312,14 +313,10 @@ public class Edit_list_Adapter extends RecyclerView.Adapter<Edit_list_Adapter.Vi
         notifyDataSetChanged();
 
     }
-
-    public ArrayList<Integer> listsun(){
-        listsun.clear();
-        for (int i = 0; i<mData.size(); i++){
-            listsun.add(mData.get(i).getList_num());
-        }
-        return listsun;
+    public void not(){
+        notifyDataSetChanged();
     }
+
 
 
 }

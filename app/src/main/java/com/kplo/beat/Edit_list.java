@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
@@ -65,7 +66,35 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
 
     String item_position;
 
-
+    private final Messenger mMessenger = new Messenger(new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            Log.i("test","act : what "+msg.what);
+            Log.e("피니시",""+isFinishing());
+            if(!isFinishing()) {
+                switch (msg.what) {
+                    case MyService.MSG_SEND_TO_ACTIVITY:
+                        Log.e("뭐냐이건", "배달받음123123");
+                        String value1 = msg.getData().getString("test1");
+                        Log.i("test", "act : value1 " + value1);
+                        String value2 = msg.getData().getString("test2");
+                        Log.i("test", "act : value1 " + value2);
+                        String value3 = msg.getData().getString("test3");
+                        Log.i("test", "act : value1 " + value3);
+                        String value6 = msg.getData().getString("test6");
+                        Log.i("test", "act : value1 " + value3);
+                    case 9999:
+                        String gugu = msg.getData().getString("gugu");
+                        Log.i("testgugu", "act : value1 " + gugu);
+                        if (gugu !=null){
+                            item_position = gugu;
+                            adapter.playing(item_position);
+                        }
+                }
+            }
+            return false;
+        }
+    }));
 
 
     @Override
@@ -141,10 +170,28 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
 
                     builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int id) {
+                            public void onClick(DialogInterface dialog, int ids) {
+
+                            for (int i = 0; i < delete_arr.size();i++){
+                                Log.e("delete_arr",i+" : "+delete_arr.get(i));
+                                for (int j = 0; j < listsun.size();j++) {
+                                    if (listsun.get(j).equals(delete_arr.get(i))) {
+                                        listsun.remove(j);
+                                    }
+                                }
+                            }
+                            for (int j = 0; j < listsun.size();j++) {
+                                Log.e("listsun변경후", j + id+" : " + listsun.get(j));
+                            }
+                            setStringArrayPref(getApplicationContext(),"listsun"+id,listsun);
+
+                            listsun = getStringArrayPref(getApplicationContext(),"listsun"+id);
+                            Log.e("이름", "listsun"+id);
+                            for (int j = 0; j < listsun.size();j++) {
+                                Log.e("listsun변경후 다시가져오기", j + " : " + listsun.get(j));
+                            }
 
                             remove_button();
-
                             count.setVisibility(View.INVISIBLE);
                             count2.setVisibility(View.INVISIBLE);
                             all_list2.setVisibility(View.INVISIBLE);
@@ -178,6 +225,8 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
 
     private void recent_music() {
 
+
+
         Call<ArrayList<User_Music_List>> call = retrofitAPI.User_play_list(id);
 
         call.enqueue(new Callback<ArrayList<User_Music_List>>() {
@@ -192,10 +241,24 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
                 Log.e("리사이클러뷰사이즈",""+postResponse.size());
 
                 // 리사이클러뷰에 LinearLayoutManager 객체 지정.
+                if (listsun != null) {
+
+                    for (int j = 0; j < listsun.size(); j++) {
+                        Log.e("listsun 리센트 불러오기전", j +id+" : " + listsun.get(j));
+                    }
+                }
+                Log.e("이름2", "listsun"+id);
+                listsun = getStringArrayPref(getApplicationContext(),"listsun"+id);
+                for (int j = 0; j < listsun.size();j++) {
+                    Log.e("listsun 리센트뮤직", j + " : " + listsun.get(j));
+                }
                 RecyclerView recyclerView = findViewById(R.id.recent_music_recycler) ;
                 recyclerView.setLayoutManager(new LinearLayoutManager(Edit_list.this,LinearLayoutManager.VERTICAL,false)) ;
 
-                listsun = getStringArrayPref(getApplicationContext(),"listsun"+id);
+
+
+
+
 
                 for (int i = 0; i < listsun.size(); i++){
                     for(int j = 0; j < postResponse.size(); j++){
@@ -210,6 +273,9 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
                     }
                 }
 
+                for (int j = 0; j < postResponse.size();j++) {
+                    Log.e("20210429", "recent_music" + " : " + postResponse.get(j));
+                }
                 // 리사이클러뷰에 SimpleTextAdapter 객체 지정.
                 adapter = new Edit_list_Adapter(postResponse) ;
 
@@ -275,7 +341,9 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
     }
 
     public void remove_button(){
-
+        for (int j = 0; j < postResponse.size();j++) {
+            Log.e("20210429", "remove_button" + " : " + postResponse.get(j));
+        }
         Call<Result2> call = retrofitAPI.delete_play_list_music_more(delete_arr);
 
         call.enqueue(new Callback<Result2>() {
@@ -285,12 +353,18 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
                 god = response.body();
                 Log.e("삭제버튼","결과:"+god.toString());
 
-                setStringArrayPref(getApplicationContext(),"listsun"+id,listsun);
+                for (int j = 0; j < listsun.size();j++) {
+                    Log.e("listsun리무부", j + " : " + listsun.get(j));
+                }
                 recent_music();
 
                 Bundle bundle = new Bundle();
-                Message msg = Message.obtain(null, MyService.getData2);
+                Message msg = Message.obtain(null, MyService.getData4);
                 msg.setData(bundle);
+
+                for (int j = 0; j < listsun.size();j++) {
+                    Log.e("listsun번드,ㄹ", j + " : " + listsun.get(j));
+                }
                 try {
                     mServiceMessenger.send(msg);      // msg 보내기
                 } catch (RemoteException e) {
@@ -344,7 +418,14 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
                                            IBinder service) {
 
                 mServiceMessenger = new Messenger(service);
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
+                    msg.replyTo = mMessenger;
+                    mServiceMessenger.send(msg);
 
+
+                } catch (RemoteException e) {
+                }
                 Intent intent = new Intent(
                         Edit_list.this, // 현재 화면
                         MyService.class); // 다음넘어갈 컴퍼넌트
@@ -354,6 +435,7 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
                 isService = true;
 
                 Log.e("마이서비스", "conn" + isService);
+
 
 
             }
@@ -407,16 +489,30 @@ public class Edit_list extends AppCompatActivity implements Edit_list_Adapter.My
             editor.putString(key, null);
         }
         editor.apply();
-
+        editor.commit();    //최종 커밋. 커밋을 해야 저장이 된다.
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-
-
     }
 
+    public void setListsun(){
+
+        listsun = getStringArrayPref(Edit_list.this,"listsun"+id);
+        for (int i = 0; i < listsun.size(); i++){
+            for(int j = 0; j < postResponse.size(); j++){
+                if (listsun.get(i).equals(postResponse.get(j).getList_num())){
+                    User_Music_List person = postResponse.get(j);
+                    //이동할 객체 삭제
+                    postResponse.remove(j);
+                    //이동하고 싶은 position에 추가
+                    postResponse.add(i,person);
+                    //Adapter에 데이터 이동알림
+                }
+            }
+        }
+    }
 
 }

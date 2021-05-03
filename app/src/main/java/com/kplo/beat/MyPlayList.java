@@ -413,42 +413,6 @@ public class MyPlayList extends AppCompatActivity implements My_PlayList_Adapter
     @Override
     public void onItemClicked(int position,String Music_url) {
 
-        p_play.setVisibility(View.INVISIBLE);
-        p_pause.setVisibility(View.VISIBLE);
-        if (mServiceMessenger != null) {
-            try {
-
-                Bundle bundle = new Bundle();
-                bundle.putInt("item_position",position);
-                Message msg = Message.obtain(null, MyService.clickmusic);
-                msg.setData(bundle);
-                mServiceMessenger.send(msg);      // msg 보내기
-
-            } catch (RemoteException e) {
-            }
-        }
-
-        /*Intent intent = new Intent(this, MyService.class);
-        bindService(intent,    // intent 객체
-                conn, // 서비스와 연결에 대한 정의
-                Context.BIND_AUTO_CREATE);
-
-        intent.putExtra(MyService.MESSAGE_KEY, true); // 설정에서 true로 바꿈과 동시에 재생 시작
-        intent.putExtra("position",position); *//*송신*//*
-
-        startForegroundService(intent);*/
-
-        /*
-        ms.setposition(position);
-        Glide.with(this)
-                .load(postResponse.get(position).getMy_img_url())
-                .apply(new RequestOptions().circleCrop().centerCrop())
-                .centerCrop()
-                .circleCrop()
-                .into(p_img);
-        p_title.setText(postResponse.get(position).getTitle());
-        p_id.setText(postResponse.get(position).getId());
-*/
     }
 
     @Override

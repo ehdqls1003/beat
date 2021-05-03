@@ -25,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Main_manu extends AppCompatActivity {
 
-    AppCompatButton my_feed,store,basket;
+    AppCompatButton my_feed,store,basket,notice,option;
     ImageView iv_view;
     TextView title;
 
@@ -45,6 +45,8 @@ public class Main_manu extends AppCompatActivity {
         iv_view = findViewById(R.id.iv_view);
         store = findViewById(R.id.store);
         basket = findViewById(R.id.basket);
+        notice = findViewById(R.id.notice);
+        option = findViewById(R.id.option);
 
         //저장된 값을 불러오기 위해 같은 네임파일을 찾음.
         SharedPreferences sf = getSharedPreferences("sFile",MODE_PRIVATE);
@@ -80,7 +82,7 @@ public class Main_manu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Main_manu.this, Server.class);
+                Intent intent = new Intent(Main_manu.this,  Show_highlight.class);
                 startActivity(intent);
 
             }
@@ -91,6 +93,26 @@ public class Main_manu extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent intent = new Intent(Main_manu.this, Basket.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+        notice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Main_manu.this, m_buy.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+        option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Main_manu.this, Message_Activity.class);
                 startActivity(intent);
                 finish();
 

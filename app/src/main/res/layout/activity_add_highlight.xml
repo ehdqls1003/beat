@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Add_highlight">
+    <TextView
+        android:id="@+id/titles"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="하이라이트"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/topline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/edit_t"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="완료"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toTopOf="@id/titles"
+        app:layout_constraintBottom_toBottomOf="@id/titles"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/edit_i"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/edit"
+        app:layout_constraintTop_toTopOf="@id/titles"
+        app:layout_constraintBottom_toBottomOf="@id/titles"
+        app:layout_constraintRight_toLeftOf="@+id/edit_t"
+        />
+
+    <View
+        android:id="@+id/topline"
+        android:layout_width="match_parent"
+
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="#000000"
+        app:layout_constraintTop_toBottomOf="@id/titles" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toBottomOf="@id/topline"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="시간"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center"
+        android:id="@+id/time_n"/>
+
+    <TextView
+        android:layout_width="40dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="시간"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:id="@+id/time_e"/>
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="시간"
+        app:layout_constraintTop_toBottomOf="@id/range_slider6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="17dp"
+        android:gravity="center"
+        android:id="@+id/time_n_e"
+        android:textColor="#5cb814"/>
+
+    <TextView
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:text="시간"
+        android:textColor="#0054FF"
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@id/range_slider6"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:id="@+id/time_c"/>
+
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:text="시간"
+        app:layout_constraintTop_toBottomOf="@id/range_slider6"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:id="@+id/time_e_e"
+        android:textColor="#5cb814"
+        android:textSize="17dp"/>
+
+    <!--<androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/buy_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="구매하기"
+        app:layout_constraintTop_toBottomOf="@id/time_n"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        />
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/flow_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="팔로우"
+        app:layout_constraintTop_toBottomOf="@id/time_n"
+        app:layout_constraintLeft_toRightOf="@id/buy_b"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/heart_outline"
+        app:layout_constraintTop_toTopOf="@id/buy_b"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:id="@+id/heart_outline"/>
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/heart"
+        app:layout_constraintTop_toTopOf="@id/buy_b"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="20dp"
+        android:id="@+id/heart"
+        android:visibility="invisible"/>
+    <TextView
+        android:id="@+id/heart_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="숫자"
+        app:layout_constraintTop_toBottomOf="@id/heart"
+        app:layout_constraintRight_toRightOf="@id/heart"
+        app:layout_constraintLeft_toLeftOf="@id/heart"/>-->
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="제목"
+        app:layout_constraintTop_toBottomOf="@id/time_e_e"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center"/>
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="이름"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        android:textSize="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"/>
+
+
+
+    <!--<ImageView
+        android:id="@+id/no_all_music"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/p_play"
+        android:src="@drawable/allmusic"/>
+
+    <ImageView
+        android:id="@+id/one_music"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/p_play"
+        android:src="@drawable/onemusic"
+        android:visibility="invisible"
+        />
+
+    <ImageView
+        android:id="@+id/all_music"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/p_play"
+        android:src="@drawable/allmusic2"
+        android:visibility="invisible"
+        />-->
+
+    <!--<ImageView
+        android:id="@+id/no_random_music"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/p_play"
+        android:src="@drawable/random"
+        />
+    <ImageView
+        android:id="@+id/random_music"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/p_play"
+        android:src="@drawable/random2"
+        android:visibility="invisible"
+        />-->
+
+
+
+
+    <ImageView
+        android:id="@+id/p_play"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/play_music"/>
+    <ImageView
+        android:id="@+id/p_pause"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/pause_music"
+        android:visibility="invisible"
+        />
+
+
+    <!--<ImageView
+        android:id="@+id/play_list"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/play_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_margin="5dp"/>-->
+
+    <!--<SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:thumb="@drawable/seekbar_seekbar1_thumb2"
+
+        android:layout_marginTop="44dp"
+
+        />-->
+
+
+    <io.apptik.widget.MultiSlider
+        android:id="@+id/range_slider5"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:thumbNumber="1"
+        app:stepsThumbsApart="15000"
+        app:drawThumbsApart="false"
+        />
+    <io.apptik.widget.MultiSlider
+        android:id="@+id/range_slider6"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:thumbNumber="1"
+        app:drawThumbsApart="false"
+        android:thumb="@drawable/seekbar_seekbar1_thumb"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

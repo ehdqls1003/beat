@@ -7,9 +7,18 @@
     <!--개인피드 게시물 업로드-->
     <string-array name="upload">
         <item>"스토리"</item>
-        <item>"비트 업로드"</item>
-        <item>"커버 업로드"</item>
+        <item>"음악 업로드"</item>
     </string-array>
+    <!--개인피드 곡 1-->
+    <string-array name="f_song_u">
+        <item>"하이라이트 등록"</item>
+    </string-array>
+    <!--개인피드 곡 2-->
+    <string-array name="f_song_u2">
+        <item>"하이라이트 수정"</item>
+        <item>"하이라이트 삭제"</item>
+    </string-array>
+
     <!--댓글 수정 삭제-->
     <string-array name="comment_more">
         <item>"수정하기"</item>

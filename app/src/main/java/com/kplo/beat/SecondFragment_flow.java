@@ -1,6 +1,7 @@
 package com.kplo.beat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -165,8 +166,11 @@ public class SecondFragment_flow extends Fragment implements My_flowing_Adapter.
     }
 
     @Override
-    public void onItemClicked(int position, String setMusic_url) {
+    public void onItemClicked(String feed_id) {
 
+        Intent intent = new Intent(getContext(), Feed.class);
+        intent.putExtra("feed_id",feed_id); /*송신*/
+        startActivity(intent);
     }
 
     @Override

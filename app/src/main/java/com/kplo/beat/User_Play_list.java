@@ -717,6 +717,7 @@ public class User_Play_list extends AppCompatActivity implements User_Playlist_A
             editor.putString(key, null);
         }
         editor.apply();
+        editor.commit();    //최종 커밋. 커밋을 해야 저장이 된다.
 
     }
 

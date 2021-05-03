@@ -73,6 +73,68 @@ public interface RetrofitAPI {
             @Field("comment_id") String comment_id,
             @Field("comment") String comment
     );
+    @FormUrlEncoded
+    @POST("insert_highlight_comment.php")
+    Call<Result2> insert_highlight_comment(
+            @Field("idx") int idx,
+            @Field("comment_id") String comment_id,
+            @Field("comment") String comment
+    );
+
+
+
+    @FormUrlEncoded
+    @POST("insert_buy_music.php")
+    Call<Result2> insert_buy_music(
+            @Field("music_idx") int music_idx,
+            @Field("receipt_id") String receipt_id,
+            @Field("purchase_id") String purchase_id
+    );
+
+    //유저 구매리스트
+    @FormUrlEncoded
+    @POST("all_buy_music.php")
+    Call<ArrayList<m_buy_item>> user_buy_list(
+            @Field("id") String id
+    );
+
+    //유저 구매리스트
+    @FormUrlEncoded
+    @POST("all_buy_music2.php")
+    Call<ArrayList<m_buy_item>> user_buy_list2(
+            @Field("id") String id
+    );
+
+    @FormUrlEncoded
+    @POST("update_buy_music.php")
+    Call<Result2> buy_buy_music(
+            @Field("buy_num") int buy_num
+    );
+
+    @FormUrlEncoded
+    @POST("delete_buy_music.php")
+    Call<Result2> delete_buy_music(
+            @Field("buy_num") int buy_num
+    );
+    //음악검색
+    @FormUrlEncoded
+    @POST("search_music.php")
+    Call<ArrayList<Search_Item>> search_music(
+            @Field("search") String search
+    );
+
+    @FormUrlEncoded
+    @POST("search_artiest.php")
+    Call<ArrayList<Flow_Item>> search_artiest(
+            @Field("search") String search
+    );
+
+    @FormUrlEncoded
+    @POST("search_music2.php")
+    Call<ArrayList<Recent_Main_Item>> search_music2(
+            @Field("search") String search
+    );
+
 
     @FormUrlEncoded
     @POST("delete_feed_like.php")
@@ -223,6 +285,9 @@ public interface RetrofitAPI {
 
     @POST("recent_music.php")
     Call<ArrayList<Recent_Main_Item>> recent_music();
+
+    @POST("recent_music2.php")
+    Call<ArrayList<Recent_Main_Item>> recent_music2();
     //유저 재생목록 들고오기
     @FormUrlEncoded
     @POST("user_play_list.php")
@@ -235,6 +300,14 @@ public interface RetrofitAPI {
     Call<ArrayList<playlistmusic>> User_play_list3(
             @Field("playnum") int playnum
     );
+
+    //유저 좋아요 목록 가져오기
+    @FormUrlEncoded
+    @POST("user_like_list.php")
+    Call<ArrayList<userlikemusic>> userlikemusic(
+            @Field("id") String id
+    );
+
     //유저 재생목록 추가하기
     @FormUrlEncoded
     @POST("insert_user_play_list.php")
@@ -242,6 +315,32 @@ public interface RetrofitAPI {
             @Field("idx") int idx,
             @Field("id") String id
     );
+
+    //유저 하이라이트추가
+    @FormUrlEncoded
+    @POST("insert_highlight.php")
+    Call<Result2> insert_hightlight(
+            @Field("music_idx") int idx,
+            @Field("time_s") int time_s,
+            @Field("time_e") int time_e
+    );
+    //유저 하이라이트삭제
+    @FormUrlEncoded
+    @POST("delete_highlight.php")
+    Call<Result2> delete_highlight(
+            @Field("music_h_num") int music_h_num
+    );
+
+    //유저 하이라이트 가져오기
+    @FormUrlEncoded
+    @POST("music_highlight_all.php")
+    Call<ArrayList<Show_highlight_Item>> all_show_highlight(
+            @Field("id") String id
+    );
+
+    //유저 하이라이트
+    @POST("all_highlight.php")
+    Call<ArrayList<Music_highlight>> all_hightlight();
 
     //유저 플레이리스트
     @FormUrlEncoded
@@ -282,6 +381,12 @@ public interface RetrofitAPI {
             @Field("idx") int idx
     );
 
+    @FormUrlEncoded
+    @POST("music_highlight_comment.php")
+    Call<ArrayList<highlight_comment>> getm_h_c(
+            @Field("idx") int idx
+    );
+
     @POST("all_feed_details.php")
     Call<ArrayList<Feed_Item>> getall_Feed_details();
 
@@ -298,6 +403,14 @@ public interface RetrofitAPI {
     @POST("my_play_list.php")
     Call<ArrayList<playlist>> my_play_list(
             @Field("id") String id
+    );
+
+    //유저 좋아요 목록 가져오기
+    @FormUrlEncoded
+    @POST("insert_24hit.php")
+    Call<Result2> insert_24hit(
+            @Field("id") String id,
+            @Field("music_idx") int music_idx
     );
 
     //@FormUrlEncoded

@@ -1,23 +1,29 @@
 package com.kplo.beat;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -36,9 +42,34 @@ public class LoginActivity extends AppCompatActivity {
     EditText inputid,inputpw;
     String id,pw;
 
+    private Messenger mServiceMessenger = null;
+    MyService ms; // 서비스 객체
+    boolean isService = false; // 서비스 중인 확인용
+    ServiceConnection conn;
     private static final String BASE_URL = "http://15.164.220.153/";
     private RetrofitAPI retrofitAPI;
-
+    //서버에서데이터받기
+    private final Messenger mMessenger = new Messenger(new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            Log.i("test","act : what "+msg.what);
+            Log.e("피니시",""+isFinishing());
+            if(!isFinishing()) {
+                switch (msg.what) {
+                    case MyService.MSG_SEND_TO_ACTIVITY:
+                        Log.e("뭐냐이건", "배달받음123123");
+                        String value1 = msg.getData().getString("test1");
+                        Log.i("test", "act : value1 " + value1);
+                        String value2 = msg.getData().getString("test2");
+                        Log.i("test", "act : value1 " + value2);
+                        String value3 = msg.getData().getString("test3");
+                        Log.i("test", "act : value1 " + value3);
+                        String value6 = msg.getData().getString("test6");
+                }
+            }
+            return false;
+        }
+    }));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,4 +183,52 @@ public class LoginActivity extends AppCompatActivity {
 
         return interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        conn = new ServiceConnection() {
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+
+                mServiceMessenger = new Messenger(service);
+                try {
+                    Message msg = Message.obtain(null, MyService.MSG_REGISTER_CLIENT);
+                    msg.replyTo = mMessenger;
+                    mServiceMessenger.send(msg);
+
+
+                } catch (RemoteException e) {
+                }
+                Intent intent = new Intent(
+                        LoginActivity.this, // 현재 화면
+                        MyService.class); // 다음넘어갈 컴퍼넌트
+                startService(intent);
+
+                // 서비스쪽 객체를 전달받을수 있슴
+                isService = true;
+
+                Log.e("마이서비스", "conn" + isService);
+
+
+            }
+
+            public void onServiceDisconnected(ComponentName name) {
+                // 서비스와 연결이 끊겼을 때 호출되는 메서드
+                isService = false;
+
+            }
+        };
+
+        Intent intent = new Intent(
+                LoginActivity.this, // 현재 화면
+                MyService.class); // 다음넘어갈 컴퍼넌트
+        bindService(intent, // intent 객체
+                conn, // 서비스와 연결에 대한 정의
+                Context.BIND_AUTO_CREATE);
+
+    }
+
 }

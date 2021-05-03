@@ -9,6 +9,16 @@
         <!--No Title Bar-->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="multiSliderStyle">@style/Widget.MultiSlider</item>
+    </style>
+
+    <style name="Widget.MultiSlider" parent="android:Widget" >
+    </style>
+
+    <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
+        <item name="colorControlNormal">@color/colorAccent</item>
+        <item name="colorControlActivated">@color/colorgray</item>
     </style>
 
 </resources>

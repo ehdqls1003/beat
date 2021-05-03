@@ -12,18 +12,33 @@
     <uses-permission android:name="android.permission.CAMERA" /> <!-- 어플이 휴면모드를 막아줌 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 포그라운드서비스 -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="q">
-        <activity android:name=".Basket_my_list"></activity>
+        <activity android:name=".hitlist_more"></activity>
+        <activity android:name=".Search_more" />
+        <activity android:name=".Search" />
+        <activity android:name=".m_buy2" />
+        <activity android:name=".m_sell" />
+        <activity android:name=".m_buy" />
+        <activity android:name=".buying" />
+        <activity android:name=".Pay" />
+        <activity android:name=".Music_highlight_comment" />
+        <activity android:name=".Show_highlight" />
+        <activity android:name=".Add_highlight" />
+        <activity android:name=".User_like_playlist" />
+        <activity android:name=".Basket_my_list" />
         <activity android:name=".Basket_add" />
         <activity android:name=".Basket" />
         <activity android:name=".Edit_list" />
@@ -77,6 +92,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
     </application>
 
 </manifest>
